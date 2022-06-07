@@ -1,0 +1,28 @@
+name: Check in
+
+on:
+  schedule:
+    # 北京时间9/17点
+    - cron:  '0 1,9 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-in:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.14.0'
+          cache: 'npm'
+
+      - name: Depend install and serve
+        env:
+          COOKIE: ${{ secrets.COOKIE }}
+          TIMEZONE: ${{ secrets.TIMEZONE }}
+        run: |
+          npm install
+          npm run serve
+
+  
